@@ -14,6 +14,7 @@ document.querySelectorAll('.logo').forEach(svg => {
     svg.addEventListener('mouseenter', () => replay(svg));
 });
 replay(document.querySelector('.hero-logo'));
+document.querySelectorAll('.doodle').forEach(replay);
 
 /* ── Smooth scroll (subtle) ── */
 let cur = scrollY, target = scrollY, raf = null;
@@ -116,11 +117,45 @@ if (q) {
     }, { threshold: 0.6 }).observe(q);
 }
 
-/* ── Copy Discord handle with feedback ── */
+/* ── Copy email with feedback ── */
 const discord = document.getElementById('discord');
 discord.addEventListener('click', async () => {
     const label = discord.textContent;
-    try { await navigator.clipboard.writeText('@_pippz_'); } catch (e) {}
+    try { await navigator.clipboard.writeText(label); } catch (e) {}
     discord.textContent = 'Copied ✓';
     setTimeout(() => (discord.textContent = label), 1600);
 });
+
+/* ── Typing line (upcoming projects) ── */
+const typed = document.getElementById('typed');
+if (typed) {
+    const phrases = typed.dataset.phrases.split('|');
+    let p = 0, i = 0, deleting = false;
+
+    const type = () => {
+        const word = phrases[p];
+        typed.textContent = word.slice(0, i);
+        let wait = deleting ? 35 : 80;
+        if (!deleting && i === word.length) {
+            deleting = true;
+            wait = 1600;
+        } else if (deleting && i === 0) {
+            deleting = false;
+            p = (p + 1) % phrases.length;
+            wait = 450;
+        } else {
+            i += deleting ? -1 : 1;
+        }
+        setTimeout(type, wait);
+    };
+
+    if (reduce) {
+        typed.textContent = phrases[0];
+    } else {
+        new IntersectionObserver((entries, obs) => {
+            if (!entries[0].isIntersecting) return;
+            obs.disconnect();
+            type();
+        }, { threshold: 0.5 }).observe(typed.closest('.row'));
+    }
+}
