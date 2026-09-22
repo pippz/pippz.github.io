@@ -40,7 +40,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(match
       <div><dt class="mono">Stack</dt><dd>Python · Flask · HTML · CSS · JS</dd></div>
       <div><dt class="mono">Status</dt><dd>Local only</dd></div>
       <div><dt class="mono">Year</dt><dd>2026</dd></div>
-      <div><dt class="mono">Code</dt><dd><a href="https://github.com/pippz" target="_blank" rel="noopener">GitHub ↗</a></dd></div>
+      <div><dt class="mono">Code</dt><dd><a href="https://github.com/pippz/todo-app" target="_blank" rel="noopener">GitHub ↗</a></dd></div>
     </dl>
   </section>
 
@@ -94,15 +94,14 @@ try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(match
     <div class="case-prose reveal">
       <p>The backend is a small Flask app: tasks and notes are stored as JSON files on disk, and each action (add, toggle, edit, delete) is its own route that rewrites the file and redirects back to the page. No database, no accounts, nothing to configure.</p>
       <p>The three tabs live on a single page and are swapped with a few lines of JavaScript, so switching between them is instant. The calendar view is the exception: it's rendered by FullCalendar, fed by a small JSON endpoint that turns tasks with a due date into events.</p>
-      <p>Restyling it after the portfolio redesign was mostly a matter of swapping the color system and replacing borders with soft shadows and rounded cards, closer to how iOS lays out lists — the underlying logic didn't need to change.</p>
     </div>
   </section>
 
   <section class="wrap case-run">
     <div class="head reveal"><h2>Run it <span style="color:var(--accent)">locally</span>.</h2></div>
     <div class="codeblock reveal">
-      <div><span class="ln">$</span>git clone https://github.com/pippz/todo-list.git</div>
-      <div><span class="ln">$</span>cd todo-list</div>
+      <div><span class="ln">$</span>git clone https://github.com/pippz/todo-app.git</div>
+      <div><span class="ln">$</span>cd todo-app</div>
       <div><span class="ln">$</span>pip install -r requirements.txt</div>
       <div><span class="ln">$</span>python app.py</div>
     </div>

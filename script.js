@@ -13,7 +13,8 @@ const replay = svg => {
 document.querySelectorAll('.logo').forEach(svg => {
     svg.addEventListener('mouseenter', () => replay(svg));
 });
-replay(document.querySelector('.hero-logo'));
+const heroLogo = document.querySelector('.hero-logo');
+if (heroLogo) replay(heroLogo);
 document.querySelectorAll('.doodle').forEach(replay);
 
 /* ── Smooth scroll (subtle) ── */
@@ -72,6 +73,12 @@ document.getElementById('theme').addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch (e) {}
+});
+
+addEventListener('storage', e => {
+    if (e.key === 'theme' && e.newValue) {
+        document.documentElement.dataset.theme = e.newValue;
+    }
 });
 
 /* ── Scroll reveal ── */
@@ -167,24 +174,44 @@ const steps = document.querySelectorAll('.step');
 const caseImg = document.getElementById('case-img');
 if (steps.length && caseImg) {
     let current = caseImg.getAttribute('src');
+    let ticking = false;
 
-    const stepObs = new IntersectionObserver(entries => {
-        entries.forEach(en => {
-            if (!en.isIntersecting) return;
-            en.target.classList.add('active');
-            steps.forEach(s => s !== en.target && s.classList.remove('active'));
-            const next = en.target.dataset.img;
-            if (next !== current) {
-                current = next;
-                caseImg.classList.add('fade');
-                setTimeout(() => {
-                    caseImg.src = next;
-                    caseImg.alt = en.target.dataset.alt;
-                    caseImg.classList.remove('fade');
-                }, reduce ? 0 : 180);
+    function setActive(step) {
+        steps.forEach(s => s.classList.toggle('active', s === step));
+        const next = step.dataset.img;
+        if (next === current) return;
+        current = next;
+        caseImg.classList.add('fade');
+        setTimeout(() => {
+            caseImg.src = next;
+            caseImg.alt = step.dataset.alt;
+            caseImg.classList.remove('fade');
+        }, reduce ? 0 : 180);
+    }
+
+    function updateActiveStep() {
+        const line = innerHeight * 0.5;
+        let closest = steps[0], closestDist = Infinity;
+        steps.forEach(step => {
+            const r = step.getBoundingClientRect();
+            const dist = Math.abs(r.top + r.height / 2 - line);
+            if (dist < closestDist) {
+                closestDist = dist;
+                closest = step;
             }
         });
-    }, { threshold: 0.6 });
+        setActive(closest);
+        ticking = false;
+    }
 
-    steps.forEach(s => stepObs.observe(s));
+    const onScroll = () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateActiveStep);
+        }
+    };
+
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    updateActiveStep();
 }
