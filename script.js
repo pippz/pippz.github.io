@@ -119,12 +119,14 @@ if (q) {
 
 /* ── Copy email with feedback ── */
 const discord = document.getElementById('discord');
-discord.addEventListener('click', async () => {
-    const label = discord.textContent;
-    try { await navigator.clipboard.writeText(label); } catch (e) {}
-    discord.textContent = 'Copied ✓';
-    setTimeout(() => (discord.textContent = label), 1600);
-});
+if (discord) {
+    discord.addEventListener('click', async () => {
+        const label = discord.textContent;
+        try { await navigator.clipboard.writeText(label); } catch (e) {}
+        discord.textContent = 'Copied ✓';
+        setTimeout(() => (discord.textContent = label), 1600);
+    });
+}
 
 /* ── Typing line (upcoming projects) ── */
 const typed = document.getElementById('typed');
@@ -158,4 +160,31 @@ if (typed) {
             type();
         }, { threshold: 0.5 }).observe(typed.closest('.row'));
     }
+}
+
+/* ── Case study: sticky image scroller ── */
+const steps = document.querySelectorAll('.step');
+const caseImg = document.getElementById('case-img');
+if (steps.length && caseImg) {
+    let current = caseImg.getAttribute('src');
+
+    const stepObs = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            en.target.classList.add('active');
+            steps.forEach(s => s !== en.target && s.classList.remove('active'));
+            const next = en.target.dataset.img;
+            if (next !== current) {
+                current = next;
+                caseImg.classList.add('fade');
+                setTimeout(() => {
+                    caseImg.src = next;
+                    caseImg.alt = en.target.dataset.alt;
+                    caseImg.classList.remove('fade');
+                }, reduce ? 0 : 180);
+            }
+        });
+    }, { threshold: 0.6 });
+
+    steps.forEach(s => stepObs.observe(s));
 }
