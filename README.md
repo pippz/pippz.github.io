@@ -2,7 +2,7 @@
 
 My personal portfolio site: a home for what I'm working on right now, and what's coming next.
 
-**Live:** [pippz.github.io](https://pippz.github.io/)
+**Live:** (insert link here)
 
 ## Features
 
