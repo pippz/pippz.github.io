@@ -4,7 +4,7 @@
     --text: #2a2b30;
     --muted: #6f6d68;
     --line: rgba(42, 43, 48, 0.14);
-    --accent: #e2573b;
+    --accent: /*#e2573b;*/#8A4FD6;
 }
 
 [data-theme="dark"] {
@@ -13,7 +13,7 @@
     --text: #e9e6df;
     --muted: #8d8b86;
     --line: rgba(233, 230, 223, 0.13);
-    --accent: #f0745a;
+    --accent: /*#f0745a;*/#B98CF2;
 }
 
 * {
