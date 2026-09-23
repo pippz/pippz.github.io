@@ -292,6 +292,19 @@ h2 {
     transition: color 0.2s;
 }
 
+.proj-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.compoundly-mark {
+    width: 2.0em;
+    height: 2.0em;
+    flex-shrink: 0;
+    color: var(--accent);
+}
+
 .row:hover h3 {
     color: var(--accent);
 }
